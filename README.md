@@ -3,10 +3,10 @@ This project is a React application that allows users to create a product using 
 
 ### Table of Contents
 
-* [Features]
-* [Installation]
-* [Usage]
-* [Technologies Used]
+* [Features](#features)
+* [Installation](#installation)
+* [Usage](#usage)
+* [Technologies Used](#technologies-used)
 
 ### Features
 
