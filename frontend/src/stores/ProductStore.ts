@@ -1,4 +1,6 @@
 import { makeAutoObservable } from 'mobx';
+import axios, { AxiosError } from 'axios';
+
 
 class ProductStore {
   title: string = '';
@@ -47,13 +49,27 @@ class ProductStore {
     }
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await axios.post('http://localhost:3333/products', {
+        title: this.title,
+        price: this.price,
+        stock_quantity: this.stockQuantity,
+        description: this.description,
+      });
+    
       this.success = 'Product created successfully!';
-      this.error = '';
-      this.resetForm();
+      this.resetForm(); // Reset the form if necessary
     } catch (error) {
-      this.error = 'There was an issue with the submission.';
-      this.success = '';
+      const axiosError = error as AxiosError;
+    
+      if (axiosError.response) {
+        // Assuming response.data has an error property of type string
+        const errorMessage = (axiosError.response.data as { error: string }).error;
+        this.error = 'Error creating product: ' + errorMessage;
+      } else if (axiosError.request) {
+        this.error = 'Error creating product: No response received from server';
+      } else {
+        this.error = 'Error creating product: ' + axiosError.message;
+      }
     }
   }
 
